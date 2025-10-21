@@ -113,7 +113,7 @@ const slides = [
     bullets: [
       'Deployment: GitOps-based Rucio deployment with Helm charts for RI-SCALE consortium',
       'Testing: Multi-IdP OIDC integration and third-party copy workflow testing',
-      'Documentation: Comprehensive RUCIO deployment guides'
+      'Documentation: Comprehensive RUCIO deployment guides and views'
     ]
   },
 

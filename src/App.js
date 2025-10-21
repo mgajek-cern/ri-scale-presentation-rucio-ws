@@ -180,27 +180,50 @@ const slides = [
   const slide = slides[currentSlide];
 
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col">
+    <div className="w-full h-screen bg-white flex flex-col relative">
+      {/* Header with logos */}
+      <div className="absolute top-0 left-0 right-0 flex justify-between items-start p-6 z-10">
+        <img 
+          src="/assets/ri-scale-logo-top-left.png" 
+          alt="RI-SCALE Logo" 
+          className="h-16 w-auto"
+        />
+        <img 
+          src="/assets/logo-top-right.png" 
+          alt="Decorative graphics" 
+          className="h-20 w-auto"
+        />
+      </div>
+
+      {/* Footer with EU funding logo */}
+      <div className="absolute bottom-14 left-0 p-6 z-10">
+        <img 
+          src="/assets/funded-bottom-left.png" 
+          alt="Funded by the European Union" 
+          className="h-8 w-auto"
+        />
+      </div>
+
       {/* Slide Content */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-5xl">
+      <div className="flex-1 flex items-center justify-center p-8 pt-24 pb-20 overflow-y-auto">
+        <div className="w-full max-w-5xl slide-content">
           {slide.type === 'title' && (
             <div className="text-center space-y-8">
-              <h1 className="text-5xl font-bold text-white mb-4">{slide.title}</h1>
-              <p className="text-2xl text-blue-300">{slide.subtitle}</p>
-              <p className="text-xl text-gray-300 mt-8">{slide.author}</p>
-              <p className="text-lg text-gray-400">{slide.footer}</p>
+              <h1 className="text-5xl font-bold text-gray-900 mb-4">{slide.title}</h1>
+              <p className="text-2xl text-orange-400">{slide.subtitle}</p>
+              <p className="text-xl text-gray-700 mt-8">{slide.author}</p>
+              <p className="text-lg text-gray-600">{slide.footer}</p>
             </div>
           )}
 
           {slide.type === 'content' && (
             <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-white mb-8">{slide.title}</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">{slide.title}</h2>
               {slide.bullets && (
                 <ul className="space-y-4">
                   {slide.bullets.map((bullet, idx) => (
-                    <li key={idx} className="text-xl text-gray-200 flex items-start">
-                      <span className="text-blue-400 mr-3">▸</span>
+                    <li key={idx} className="text-xl text-gray-800 flex items-start">
+                      <span className="text-orange-500 mr-3">▸</span>
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -209,9 +232,9 @@ const slides = [
               {slide.content && (
                 <div className="space-y-6">
                   {slide.content.map((item, idx) => (
-                    <div key={idx} className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
-                      <h3 className="text-2xl font-semibold text-blue-300 mb-3">{item.heading}</h3>
-                      <p className="text-lg text-gray-300">{item.text}</p>
+                    <div key={idx} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                      <h3 className="text-2xl font-semibold text-orange-400 mb-3">{item.heading}</h3>
+                      <p className="text-lg text-gray-700">{item.text}</p>
                     </div>
                   ))}
                 </div>
@@ -221,25 +244,25 @@ const slides = [
 
           {slide.type === 'twocolumn' && (
             <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-white mb-8">{slide.title}</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">{slide.title}</h2>
               <div className="grid grid-cols-2 gap-8">
-                <div className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
-                  <h3 className="text-2xl font-semibold text-red-300 mb-4">{slide.left.heading}</h3>
+                <div className="bg-red-50 p-6 rounded-lg border border-red-200">
+                  <h3 className="text-2xl font-semibold text-red-700 mb-4">{slide.left.heading}</h3>
                   <ul className="space-y-3">
                     {slide.left.items.map((item, idx) => (
-                      <li key={idx} className="text-lg text-gray-300 flex items-start">
-                        <span className="text-red-400 mr-3">✗</span>
+                      <li key={idx} className="text-lg text-gray-700 flex items-start">
+                        <span className="text-red-500 mr-3">✗</span>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
-                  <h3 className="text-2xl font-semibold text-green-300 mb-4">{slide.right.heading}</h3>
+                <div className="bg-green-50 p-6 rounded-lg border border-green-200">
+                  <h3 className="text-2xl font-semibold text-green-700 mb-4">{slide.right.heading}</h3>
                   <ul className="space-y-3">
                     {slide.right.items.map((item, idx) => (
-                      <li key={idx} className="text-lg text-gray-300 flex items-start">
-                        <span className="text-green-400 mr-3">✓</span>
+                      <li key={idx} className="text-lg text-gray-700 flex items-start">
+                        <span className="text-green-500 mr-3">✓</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -251,12 +274,12 @@ const slides = [
 
           {slide.type === 'image' && (
             <div className="space-y-6 text-center">
-              <h2 className="text-4xl font-bold text-white mb-8">{slide.title}</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">{slide.title}</h2>
               <div className="flex justify-center">
                 <img
                   src={`/assets/${slide.image}`}
                   alt={slide.title}
-                  className="max-h-[600px] w-auto border border-slate-700 rounded-lg shadow-lg bg-white p-4"
+                  className="max-h-[600px] w-auto border border-gray-300 rounded-lg shadow-lg bg-white p-4"
                 />
               </div>
             </div>
@@ -264,9 +287,9 @@ const slides = [
 
           {slide.type === 'closing' && (
             <div className="text-center space-y-8">
-              <h1 className="text-5xl font-bold text-white mb-4">{slide.title}</h1>
-              <p className="text-3xl text-blue-300 mb-8">{slide.content}</p>
-              <div className="space-y-2 text-gray-300">
+              <h1 className="text-5xl font-bold text-gray-900 mb-4">{slide.title}</h1>
+              <p className="text-3xl text-orange-400 mb-8">{slide.content}</p>
+              <div className="space-y-2 text-gray-700">
                 {slide.contact.map((line, idx) => (
                   <p key={idx} className="text-xl">{line}</p>
                 ))}
@@ -277,24 +300,24 @@ const slides = [
       </div>
 
       {/* Navigation */}
-      <div className="bg-slate-950/50 p-4 flex items-center justify-between">
+      <div className="bg-gray-100 border-t border-gray-300 p-4 flex items-center justify-between relative z-20">
         <button
           onClick={prevSlide}
           disabled={currentSlide === 0}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-600 transition"
+          className="flex items-center gap-2 px-4 py-2 bg-orange-400 text-white rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-orange-700 transition"
         >
           <ChevronLeft size={20} />
           Previous
         </button>
         
-        <div className="text-gray-400">
+        <div className="text-gray-600">
           Slide {currentSlide + 1} of {slides.length}
         </div>
 
         <button
           onClick={nextSlide}
           disabled={currentSlide === slides.length - 1}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-600 transition"
+          className="flex items-center gap-2 px-4 py-2 bg-orange-400 text-white rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-orange-700 transition"
         >
           Next
           <ChevronRight size={20} />

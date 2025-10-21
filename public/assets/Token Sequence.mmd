@@ -1,0 +1,46 @@
+```mermaid
+%% Option 1: Compact Sequence Diagram
+
+%% Sequence:
+
+%% 1. Rucio requests all tokens from IdP using its own token (r⃝)
+%% 2. Storage systems only validate tokens - they don't issue them
+%% 3. Three separate tokens: FTS auth (f⃝), source read (s⃝), destination write (d⃝)
+%% 4. All tokens are OIDC/JWT tokens from the Identity Provider, not macaroons from storage
+sequenceDiagram
+    participant U as User
+    participant R as Rucio
+    participant I as IdP
+    participant F as FTS
+    participant S1 as Source Storage
+    participant S2 as Destination Storage
+    
+    U->>R: Data transfer rule
+    R->>I: OIDC auth (using Rucio's token r⃝)
+    I-->>R: JWT + WLCG claims
+    
+    Note over R: Rucio requests tokens for both RSEs
+    R->>I: Request source token (using r⃝)
+    I-->>R: Source token (s⃝)
+    
+    R->>I: Request destination token (using r⃝)  
+    I-->>R: Destination token (d⃝)
+    
+    R->>I: Request FTS token (using r⃝)
+    I-->>R: FTS token (f⃝)
+    
+    R->>F: Submit transfer job + f⃝ + s⃝ + d⃝
+    
+    Note over F,S2: Third-party copy via WebDAV COPY
+    F->>S2: COPY request + d⃝ + TransferHeaderAuth: s⃝
+    
+    Note over S2,S1: S2 validates tokens and pulls from S1
+    S2->>I: Validate d⃝ (online) or validate locally
+    S2->>S1: GET request + s⃝
+    S1->>I: Validate s⃝ (online) or validate locally
+    S1-->>S2: Data transfer
+    S2-->>F: Transfer complete
+    
+    F-->>R: Status
+    R-->>U: Result
+```

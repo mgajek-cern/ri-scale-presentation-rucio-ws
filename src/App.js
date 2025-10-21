@@ -4,8 +4,19 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+
+// Sequence:
+
+// Introduction (Title, Project Overview, Use Cases) - Sets context
+// Problem & Solution (Challenge/Why Rucio+FTS) - Establishes rationale
+// Architecture (Diagram + Components) - Shows the solution
+// Technical Deep Dive (OIDC Token Flow + Standards) - Rucio-specific technical details
+// Implementation (Current Status + Challenges/Solutions) - What you're building
+// Future (Roadmap & Impact) - Where this leads
+// Closing - Q&A
+
 const slides = [
-  // Slide 1: Title
+
   {
     type: 'title',
     title: 'RI-SCALE: Building a Data Exploitation Platform for European Research Infrastructures',
@@ -14,7 +25,7 @@ const slides = [
     footer: 'RI-SCALE Project'
   },
   
-  // Slide 2: Project Overview
+
   {
     type: 'content',
     title: 'What is RI-SCALE?',
@@ -38,20 +49,21 @@ const slides = [
     ]
   },
 
-  // Slide 3: Use Cases
+
   {
     type: 'content',
-    title: 'Real-World Applications',
+    title: 'AI-Driven Research Applications',
+    description: 'Training machine learning models on large-scale European datasets to enable real-time prediction, automated decision-making, and scientific discovery across critical domains',
     bullets: [
       'Climate Modeling: High-resolution downscaling of scenarios and smart anomaly detection',
-      'Cancer Treatment: Colorectal cancer prediction with explainable AI and synthetic pathology data',
+      'Cancer Treatment: Colorectal cancer prediction with explainable AI and synthetic pathology data', 
       'Space Research: Intelligent radar scheduling and space debris detection',
       'Biological Imaging: Foundational models for heterogeneous image data and AI-powered discovery',
       'EuroHPC Integration: Running models on Europe\'s largest supercomputers for Digital Twin Earth'
     ]
   },
 
-  // Slide 4: The Problem & Solution (merged challenge + why Rucio)
+
   {
     type: 'twocolumn',
     title: 'Challenge & Why Rucio+FTS?',
@@ -75,14 +87,13 @@ const slides = [
     }
   },
 
-// Slide 5: Architecture Diagram
   {
     type: 'image',
     title: 'RI-SCALE Architecture',
     image: 'High-Level Diagram RI-SCALE Data Lifecycle Management.png'
   },
 
-  // Slide 5: Description of Architecture Components
+
    {
     type: 'content',
     title: 'RI-SCALE Architecture',
@@ -106,29 +117,44 @@ const slides = [
     ]
   },
 
-  // Slide 6: Current Implementation (merged focus + technical approach)
   {
     type: 'content',
     title: 'Current Implementation Status',
     bullets: [
       'Deployment: GitOps-based Rucio deployment with Helm charts for RI-SCALE consortium',
       'Testing: Multi-IdP OIDC integration and third-party copy workflow testing',
-      'Documentation: Comprehensive RUCIO deployment guides and views'
+      'Documentation: RUCIO deployment guides and views'
     ]
   },
 
-  // Slide 7: Challenges & Solutions
+  {
+    type: 'image2',
+    title: 'Storage OIDC Token Validation Sequence',
+    image: 'Token Sequence.png'
+  },
+
+  {
+    type: 'content',
+    title: 'OIDC Token Standards & Storage Integration',
+    bullets: [
+      'WLCG-compliant JWT tokens → Enable offline validation in storage systems without IdP dependency',
+      'Standardized claims (scope, audience, expiration) → Support third-party copy operations at scale',
+      'Local token validation → High-performance transfers without network round-trips to IdPs'
+    ]
+  },
+
+
   {
     type: 'content',
     title: 'Key Challenges & Solutions',
     bullets: [
-      'Multi-IdP OIDC complexity → Standardized testing framework with automated validation',
-      'Distributed deployment management → GitOps-based automation with Helm charts',
-      'Partner facility integration → Standardized APIs and authentication protocols'
+      'Multi-IdP integration challenges → Comprehensive OIDC testing framework with WLCG-compliant OIDC token validation',
+      'Multi-site Rucio deployment → GitOps workflows with Helm-based configuration management',
+      'Partner facility integration (IdPs, data holdings, data spaces) → Unified data orchestration layer with consistent token handling'
     ]
   },
 
-  // Slide 8: Roadmap & Impact (merged next steps + benefits + collaboration)
+
   {
     type: 'content',
     title: 'Roadmap & Expected Impact',
@@ -152,7 +178,7 @@ const slides = [
     ]
   },
 
-  // Slide 9: Closing
+
   {
     type: 'closing',
     title: 'Thank You',
@@ -272,7 +298,7 @@ const slides = [
             </div>
           )}
 
-          {slide.type === 'image' && (
+          {(slide.type === 'image' || slide.type === 'image2') && (
             <div className="space-y-6 text-center">
               <h2 className="text-4xl font-bold text-gray-900 mb-8">{slide.title}</h2>
               <div className="flex justify-center">

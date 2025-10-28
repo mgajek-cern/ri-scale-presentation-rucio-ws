@@ -10,7 +10,6 @@ function App() {
 // Introduction (Title, Project Overview, Use Cases) - Sets context
 // Problem & Solution (Challenge/Why Rucio+FTS) - Establishes rationale
 // Architecture (Diagram + Components) - Shows the solution
-// Technical Deep Dive (OIDC Token Flow + Standards) - Rucio-specific technical details
 // Implementation (Current Status + Challenges/Solutions) - What you're building
 // Future (Roadmap & Impact) - Where this leads
 // Closing - Q&A
@@ -36,7 +35,7 @@ const slides = [
       },
       {
         heading: 'Scale',
-        text: '29 partners from 13 countries | €10.5M budget | 36 months (2025-2028)'
+        text: '29 participants from 13 countries | €10.5M budget | 36 months (2025-2028)'
       },
       {
         heading: 'Challenge',
@@ -49,20 +48,36 @@ const slides = [
     ]
   },
 
+  {
+    type: 'image',
+    title: 'Participants',
+    image: 'Participants.png'
+  },
+
+  // Explain each group: research & development, commercial partner, etc. and how they coorperate
+
 
   {
     type: 'content',
-    title: 'AI-Driven Research Applications',
-    description: 'Training machine learning models on large-scale European datasets to enable real-time prediction, automated decision-making, and scientific discovery across critical domains',
+    title: 'Key Use Cases',
     bullets: [
-      'Climate Modeling: High-resolution downscaling of scenarios and smart anomaly detection',
-      'Cancer Treatment: Colorectal cancer prediction with explainable AI and synthetic pathology data', 
+      'Climate Science: High-resolution downscaling and anomaly detection in weather data',
       'Space Research: Intelligent radar scheduling and space debris detection',
-      'Biological Imaging: Foundational models for heterogeneous image data and AI-powered discovery',
-      'EuroHPC Integration: Running models on Europe\'s largest supercomputers for Digital Twin Earth'
+      'Medical Imaging: Colorectal cancer prediction and synthetic pathology data generation',
+      'Biological Discovery: Foundation models for heterogeneous imaging and AI-powered analysis',
+      'Data Intelligence: Generative AI assistants for automated discovery and analysis'
     ]
   },
 
+  // {
+  //   type: 'content',
+  //   title: 'Key User Roles',
+  //   bullets: [
+  //     'Data Scientists: End users performing model development and analysis operations',
+  //     'Domain Experts: Specialists providing domain knowledge and result validation',
+  //     'DEP Administrators: Managing internal operations and system infrastructure'
+  //   ]
+  // },
 
   {
     type: 'twocolumn',
@@ -89,31 +104,27 @@ const slides = [
 
   {
     type: 'image',
-    title: 'RI-SCALE Architecture',
+    title: 'RI-SCALE Architecture Overview',
+    description: 'Complete Data Exploitation Platform ecosystem showing user roles, data flow and integration with external research infrastructure and compute resources',
+    image: 'High-Level Diagram RI-SCALE Data Exploitation Platform.png'
+  },
+
+  {
+    type: 'image', 
+    title: 'Data Lifecycle Management Architecture',
+    description: 'Core data orchestration layer powered by Rucio and FTS, managing data discovery, transfer and preparation across distributed European research facilities',
     image: 'High-Level Diagram RI-SCALE Data Lifecycle Management.png'
   },
 
-
-   {
+  {
     type: 'content',
-    title: 'RI-SCALE Architecture',
-    content: [
-      {
-        heading: 'Data Orchestration Core',
-        text: 'Rucio + FTS for distributed data management and transfer'
-      },
-      {
-        heading: 'Authentication Framework',
-        text: 'Multi-IdP OIDC integration with authorization framework and credit management system'
-      },
-      {
-        heading: 'Data Services',
-        text: 'Discovery, popularity tracking and preparation services'
-      },
-      {
-        heading: 'External Integration',
-        text: 'Data holdings and data spaces'
-      }
+    title: 'RI-SCALE Architecture Components',
+    bullets: [
+      'Data Orchestration: Rucio + FTS for distributed data management and transfer',
+      'Authentication & Credits: Multi-IdP OIDC with policy-based resource allocation',
+      'Data Services: Discovery, popularity tracking and preparation for RI datasets',
+      'AI Model Hub: Scalable repository with EuroHPC integration',
+      'External Integration: Data holdings, data spaces and e-infrastructure connections'
     ]
   },
 
@@ -122,33 +133,16 @@ const slides = [
     title: 'Current Implementation Status',
     bullets: [
       'Deployment: GitOps-based Rucio deployment with Helm charts for RI-SCALE consortium',
-      'Testing: Multi-IdP OIDC integration and third-party copy workflow testing',
+      'Testing: Creating integration and third-party copy workflow testing',
       'Documentation: RUCIO deployment guides and views'
     ]
   },
 
   {
-    type: 'image2',
-    title: 'Storage OIDC Token Validation Sequence',
-    image: 'Token Sequence.png'
-  },
-
-  {
-    type: 'content',
-    title: 'OIDC Token Standards & Storage Integration',
-    bullets: [
-      'WLCG-compliant JWT tokens → Enable offline validation in storage systems without IdP dependency',
-      'Standardized claims (scope, audience, expiration) → Support third-party copy operations at scale',
-      'Local token validation → High-performance transfers without network round-trips to IdPs'
-    ]
-  },
-
-
-  {
     type: 'content',
     title: 'Key Challenges & Solutions',
     bullets: [
-      'Multi-IdP integration challenges → Comprehensive OIDC testing framework with WLCG-compliant OIDC token validation',
+      'Multi-IdP integration challenges → Comprehensive OIDC testing framework',
       'Multi-site Rucio deployment → GitOps workflows with Helm-based configuration management',
       'Partner facility integration (IdPs, data holdings, data spaces) → Unified data orchestration layer with consistent token handling'
     ]
@@ -157,7 +151,7 @@ const slides = [
 
   {
     type: 'content',
-    title: 'Roadmap & Expected Impact',
+    title: 'RUCIO Roadmap & Expected Impact',
     content: [
       {
         heading: 'Short Term (2025-early 2026)',
@@ -165,7 +159,7 @@ const slides = [
       },
       {
         heading: 'Medium Term (2026)',
-        text: 'Multi-IdP integration, data holdings surveys and first repository integrations'
+        text: 'Integration of multiple Identity providers, data holdings surveys and first repository integrations'
       },
       {
         heading: 'Long Term (2027-2028)',

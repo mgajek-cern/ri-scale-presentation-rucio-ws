@@ -4,7 +4,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-
 // Sequence:
 
 // Introduction (Title, Project Overview, Use Cases) - Sets context
@@ -15,7 +14,6 @@ function App() {
 // Closing - Q&A
 
 const slides = [
-
   {
     type: 'title',
     title: 'RI-SCALE: Building a Data Exploitation Platform for European Research Infrastructures',
@@ -24,7 +22,6 @@ const slides = [
     footer: 'RI-SCALE Project'
   },
   
-
   {
     type: 'content',
     title: 'What is RI-SCALE?',
@@ -54,9 +51,6 @@ const slides = [
     image: 'Participants.png'
   },
 
-  // Explain each group: research & development, commercial partner, etc. and how they coorperate
-
-
   {
     type: 'content',
     title: 'Key Use Cases',
@@ -68,16 +62,6 @@ const slides = [
       'Data Intelligence: Generative AI assistants for automated discovery and analysis'
     ]
   },
-
-  // {
-  //   type: 'content',
-  //   title: 'Key User Roles',
-  //   bullets: [
-  //     'Data Scientists: End users performing model development and analysis operations',
-  //     'Domain Experts: Specialists providing domain knowledge and result validation',
-  //     'DEP Administrators: Managing internal operations and system infrastructure'
-  //   ]
-  // },
 
   {
     type: 'twocolumn',
@@ -128,26 +112,56 @@ const slides = [
     ]
   },
 
+  // NEW: Data Workflow Phases slide
+  {
+    type: 'content',
+    title: 'Scientific Data Workflow Phases',
+    bullets: [
+      'Phase 1 - Discover & Access: Data Discovery Service with Rucio locality checks and automated third-party copy transfers',
+      'Phase 2 - Prepare & Transform: Data Preparation Service for cleaning, normalization, and anonymization with Rucio orchestration',
+      'Phase 3 - AI Model Exploration: MLflow-backed AI Model Hub for browsing, benchmarking, and selecting models',
+      'Phase 4 - Compute & Analyze: Pipeline orchestration with HPC/cloud integration and Data Popularity Service for QoS',
+      'Phase 5 - Results & Feedback: Result retrieval and model versioning with complete provenance tracking'
+    ]
+  },
+
+  // ENHANCED: Current Implementation Status
   {
     type: 'content',
     title: 'Current Implementation Status',
     bullets: [
       'Deployment: GitOps-based Rucio deployment with Helm charts for RI-SCALE consortium',
-      'Testing: Creating integration and third-party copy workflow testing',
-      'Documentation: RUCIO deployment guides and views'
+      'Documentation: Rucio deployment guides and API mapping documentation completed',
+      'Testing Framework: Creating integration and third-party copy workflow testing infrastructure',
+      'API Mapping: REST API endpoints mapped for all 5 workflow phases (discovery → results)',
+      'Authentication Design: OIDC integration blueprint and multi-IdP framework planning'
     ]
   },
 
+  // ENHANCED: Key Challenges & Solutions
   {
     type: 'content',
-    title: 'Key Challenges & Solutions',
+    title: 'Key Implementation Challenges & Solutions',
     bullets: [
-      'Multi-IdP integration challenges → Comprehensive OIDC testing framework',
-      'Multi-site Rucio deployment → GitOps workflows with Helm-based configuration management',
-      'Partner facility integration (IdPs, data holdings, data spaces) → Unified data orchestration layer with consistent token handling'
+      'Multi-IdP OIDC Integration: Challenge - Complex identity federation across research facilities → Solution - Single token approach with WP4 AAI introspection for consistent identity propagation',
+      'Distributed Data Orchestration: Challenge - Coordinating 2+ PB across multiple sites → Solution - Rucio RSE topology with network distance optimization and automated replica management',
+      'Workflow Complexity: Challenge - Managing 5-phase scientific workflows → Solution - REST API mapping with phase-specific endpoints and asynchronous transfer monitoring',
+      'Storage Integration: Challenge - Heterogeneous storage systems (S3, WebDAV, SRM) → Solution - Unified protocol configuration with quality-of-service policies per storage tier'
     ]
   },
 
+  // NEW: Technical Implementation Details slide
+  {
+    type: 'content',
+    title: 'Rucio Integration Approach',
+    bullets: [
+      'Account Management: Automated OIDC identity mapping with SCIM API integration',
+      'Transfer Orchestration: Third-party copy workflows with FTS backend for multi-site data movement',
+      'Storage Topology: RSE configuration for T0/T1/T2 storage hierarchy with geographic distribution',
+      'API Coverage: Complete REST API mapping across discovery, preparation, compute, and results phases',
+      'Monitoring: Real-time transfer progress tracking with Data Popularity Service for caching optimization'
+    ]
+  },
 
   {
     type: 'content',
@@ -171,7 +185,6 @@ const slides = [
       }
     ]
   },
-
 
   {
     type: 'closing',

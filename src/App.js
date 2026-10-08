@@ -4,97 +4,50 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-// Sequence:
+// Sequence (mirrors the abstract):
 
-// Introduction (Title, Project Overview, Use Cases) - Sets context
-// Problem & Solution (Challenge/Why Rucio+FTS) - Establishes rationale
-// Architecture (Diagram + Components) - Shows the solution
-// Implementation (Current Status + Challenges/Solutions) - What you're building
-// Future (Roadmap & Impact) - Where this leads
+// Introduction (Title, Recap) - Sets context, links back to the first workshop
+// Architecture (DLM diagram) - Where Rucio + FTS sit
+// Testbed (What we built, IdP findings, small changes) - What has been validated
+// Deployment (Kubernetes, GitOps, managed cloud) - Dev environment to production-like
+// Authorization (OPA) - Policy-based access control
+// Future (Roadmap) - Real use cases, on-prem + cloud, partner guidance
 // Closing - Q&A
 
 const slides = [
   {
     type: 'title',
-    title: 'RI-SCALE: Building a Data Exploitation Platform for European Research Infrastructures',
-    subtitle: 'Rucio Workshop 2025',
-    author: 'Marvin Gajek',
-    footer: 'RI-SCALE Project'
+    title: 'RI-SCALE',
+    subtitle: 'DEP DLM Testbed for Validating RI-SCALE Deployments',
+    author: 'Marvin Gajek (CERN), Rohit Shreenivas',
+    footer: 'Presented by Rohit Shreenivas | Rucio Workshop 2026'
   },
-  
+
   {
     type: 'content',
-    title: 'What is RI-SCALE?',
+    title: 'RI-SCALE in a Nutshell',
     content: [
       {
-        heading: 'Mission',
-        text: 'Develop secure, large-scale data management and AI-driven analysis platforms for European Research Infrastructures'
+        heading: 'Project',
+        text: 'Data Exploitation Platforms (DEPs) for European Research Infrastructures | 29 participants, 13 countries | 2025-2028'
       },
       {
-        heading: 'Scale',
-        text: '29 participants from 13 countries | €10.5M budget | 36 months (2025-2028)'
+        heading: 'Our Role',
+        text: 'Rucio and FTS as the data orchestration layer of the Data Lifecycle Management (DLM)'
       },
       {
-        heading: 'Challenge',
-        text: 'Unlocking scientific value in 2+ PB of underutilized datasets across distributed facilities'
+        heading: 'Last Workshop',
+        text: 'Project context, use cases and DLM architecture'
       },
       {
-        heading: 'Solution',
-        text: 'Data Exploitation Platforms with integrated AI/ML capabilities'
+        heading: 'Since Then',
+        text: 'An open, CI-validated testbed and a Kubernetes deployment path for use cases'
       }
     ]
   },
 
   {
     type: 'image',
-    title: 'Participants',
-    image: 'Participants.png'
-  },
-
-  {
-    type: 'content',
-    title: 'Key Use Cases',
-    bullets: [
-      'Climate Science: High-resolution downscaling and anomaly detection in weather data',
-      'Space Research: Intelligent radar scheduling and space debris detection',
-      'Medical Imaging: Colorectal cancer prediction and synthetic pathology data generation',
-      'Biological Discovery: Foundation models for heterogeneous imaging and AI-powered analysis',
-      'Data Intelligence: Generative AI assistants for automated discovery and analysis'
-    ]
-  },
-
-  {
-    type: 'twocolumn',
-    title: 'Challenge & Why Rucio+FTS?',
-    left: {
-      heading: 'The Challenge',
-      items: [
-        'Massive datasets distributed across European facilities',
-        'Limited accessibility and discoverability',
-        'Complex authentication requirements',
-        'Need for secure, scalable data orchestration'
-      ]
-    },
-    right: {
-      heading: 'Why Rucio+FTS?',
-      items: [
-        'Proven at scale - battle-tested in CERN',
-        'Distributed data management capabilities',
-        'Flexible authentication framework',
-        'Perfect fit for multi-site Research Infrastructure'
-      ]
-    }
-  },
-
-  {
-    type: 'image',
-    title: 'RI-SCALE Architecture Overview',
-    description: 'Complete Data Exploitation Platform ecosystem showing user roles, data flow and integration with external research infrastructure and compute resources',
-    image: 'High-Level Diagram RI-SCALE Data Exploitation Platform.png'
-  },
-
-  {
-    type: 'image', 
     title: 'Data Lifecycle Management Architecture',
     description: 'Core data orchestration layer powered by Rucio and FTS, managing data discovery, transfer and preparation across distributed European research facilities',
     image: 'High-Level Diagram RI-SCALE Data Lifecycle Management.png'
@@ -102,86 +55,87 @@ const slides = [
 
   {
     type: 'content',
-    title: 'RI-SCALE Architecture Components',
+    title: 'dep-dlm-testbed',
     bullets: [
-      'Data Orchestration: Rucio + FTS for distributed data management and transfer',
-      'Authentication & Credits: Multi-IdP OIDC with policy-based resource allocation',
-      'Data Services: Discovery, popularity tracking and preparation for RI datasets',
-      'AI Model Hub: Scalable repository with EuroHPC integration',
-      'External Integration: Data holdings, data spaces and e-infrastructure connections'
+      'Stack: Rucio, FTS3, XRootD, Teapot WebDAV, Keycloak and OPA',
+      'Validated end to end: OIDC token orchestration, third-party-copy transfers and rule lifecycles',
+      'Both FTS token modes: managed (token exchange) and unmanaged',
+      'Same scenarios on Docker Compose and Kubernetes, every one run in CI',
+      'External identity federations: EGI Check-In and LS AAI / Perun'
     ]
   },
 
-  // NEW: Data Workflow Phases slide
   {
-    type: 'content',
-    title: 'Scientific Data Workflow Phases',
-    bullets: [
-      'Phase 1 - Discover & Access: Data Discovery Service with Rucio locality checks and automated third-party copy transfers',
-      'Phase 2 - Prepare & Transform: Data Preparation Service for cleaning, normalization, and anonymization with Rucio orchestration',
-      'Phase 3 - AI Model Exploration: MLflow-backed AI Model Hub for browsing, benchmarking, and selecting models',
-      'Phase 4 - Compute & Analyze: Pipeline orchestration with HPC/cloud integration and Data Popularity Service for QoS',
-      'Phase 5 - Results & Feedback: Result retrieval and model versioning with complete provenance tracking'
-    ]
+    type: 'twocolumn',
+    title: 'Identity Providers: Findings & Patches',
+    left: {
+      heading: 'What We Found',
+      items: [
+        'Token exchange capabilities differ per IdP (e.g. resource= and refresh_token support)',
+        'Features not yet upstream in Rucio, FTS3, gfal2, davix and Teapot',
+        'IdP-specific onboarding (e.g. LS AAI test VO membership)'
+      ]
+    },
+    right: {
+      heading: 'What We Did',
+      items: [
+        'Minimal, documented patches with decisions recorded as ADRs',
+        'Per-IdP scope profiles instead of a binary wlcg/egi switch',
+        'Runbook for adding a new IdP profile'
+      ]
+    }
   },
 
-  // ENHANCED: Current Implementation Status
   {
     type: 'content',
-    title: 'Current Implementation Status',
+    title: 'From Testbed to Production-Like Deployment',
     bullets: [
-      'Deployment: GitOps-based Rucio deployment with Helm charts for RI-SCALE consortium',
-      'Documentation: Rucio deployment guides and API mapping documentation completed',
-      'Testing Framework: Creating integration and third-party copy workflow testing infrastructure',
-      'API Mapping: REST API endpoints mapped for all 5 workflow phases (discovery → results)',
-      'Authentication Design: OIDC integration blueprint and multi-IdP framework planning'
-    ]
-  },
-
-  // ENHANCED: Key Challenges & Solutions
-  {
-    type: 'content',
-    title: 'Key Implementation Challenges & Solutions',
-    bullets: [
-      'Multi-IdP OIDC Integration: Challenge - Complex identity federation across research facilities → Solution - Single token approach with WP4 AAI introspection for consistent identity propagation',
-      'Distributed Data Orchestration: Challenge - Coordinating 2+ PB across multiple sites → Solution - Rucio RSE topology with network distance optimization and automated replica management',
-      'Workflow Complexity: Challenge - Managing 5-phase scientific workflows → Solution - REST API mapping with phase-specific endpoints and asynchronous transfer monitoring',
-      'Storage Integration: Challenge - Heterogeneous storage systems (S3, WebDAV, SRM) → Solution - Unified protocol configuration with quality-of-service policies per storage tier'
-    ]
-  },
-
-  // NEW: Technical Implementation Details slide
-  {
-    type: 'content',
-    title: 'Rucio Integration Approach',
-    bullets: [
-      'Account Management: Automated OIDC identity mapping with SCIM API integration',
-      'Transfer Orchestration: Third-party copy workflows with FTS backend for multi-site data movement',
-      'Storage Topology: RSE configuration for T0/T1/T2 storage hierarchy with geographic distribution',
-      'API Coverage: Complete REST API mapping across discovery, preparation, compute, and results phases',
-      'Monitoring: Real-time transfer progress tracking with Data Popularity Service for caching optimization'
+      'Helm: umbrella chart, upstream Rucio charts where available',
+      'GitOps: Argo CD and Flux across sandbox, staging and production',
+      'Staging on a managed cloud platform (GKE): managed PostgreSQL, external secrets management',
+      'Public endpoints via Gateway API, infrastructure provisioned with Terraform',
+      'Own XRootD/Teapot validation storage registered as RSE, e2e transfer tests run against it'
     ]
   },
 
   {
     type: 'content',
-    title: 'RUCIO Roadmap & Expected Impact',
+    title: 'Policy-Driven Authorization',
     content: [
       {
-        heading: 'Short Term (2025-early 2026)',
-        text: 'Rucio prototype deployment and authentication blueprint design'
+        heading: 'Approach',
+        text: 'Rucio delegates permission checks to OPA through a Rego policy package'
       },
       {
-        heading: 'Medium Term (2026)',
-        text: 'Integration of multiple Identity providers, data holdings surveys and first repository integrations'
+        heading: 'Validation',
+        text: 'Rego unit tests in CI and entitlement-tier tests across DEP persona accounts'
       },
       {
-        heading: 'Long Term (2027-2028)',
-        text: 'Full data holdings integration, multiple DEP deployments and optimization'
+        heading: 'Next Step',
+        text: 'Policy-driven data access across institutions, with ODRL policies from the WP4 policy repository'
+      }
+    ]
+  },
+
+  {
+    type: 'content',
+    title: 'Roadmap for Use Cases',
+    content: [
+      {
+        heading: 'Done',
+        text: 'Testbed, external IdPs, GitOps and managed-cloud staging, OPA authorization'
+      },
+      {
+        heading: 'Next (late 2026-2027)',
+        text: 'Use-case data holdings registered as RSEs (public and sensitive), operator runbooks for partner sites, reusable deployment repository'
+      },
+      {
+        heading: 'Later (2027-2028)',
+        text: 'On-premises and multi-cloud variants, multiple DEP deployments'
       },
       {
         heading: 'Impact',
-        text: 'Secure, scalable data access for European RIs and contribution back to Rucio community'
+        text: 'Secure, scalable data access for European RIs and contribution back to the Rucio community'
       }
     ]
   },
@@ -192,7 +146,8 @@ const slides = [
     content: 'Questions & Discussion',
     contact: [
       'Project: RI-SCALE',
-      'Contact: marvin.gajek@cern.ch',
+      'Contact: rohit.nanjangud.shreenivas@cern.ch, marvin.gajek@cern.ch',
+      'Testbed: https://github.com/RI-SCALE/dep-dlm-testbed',
       'More info: https://www.riscale.eu'
     ]
   }

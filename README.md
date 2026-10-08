@@ -1,4 +1,4 @@
-# ri-scale-presentation-rucio-ws-2025
+# ri-scale-presentation-rucio-ws
 
 Presentation on the RI-SCALE project for Building a Data Exploitation Platform for European Research Infrastructures with Rucio+FTS Data Orchestration Layer
 

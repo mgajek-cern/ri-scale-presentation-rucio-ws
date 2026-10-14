@@ -1,6 +1,26 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Status values used in the integration matrix
+const DONE = 'done';
+const PROGRESS = 'progress';
+const TODO = 'todo';
+
+const STATUS_STYLE = {
+  [DONE]: { label: 'Done', className: 'bg-green-100 text-green-800 border-green-300' },
+  [PROGRESS]: { label: 'In progress', className: 'bg-amber-100 text-amber-800 border-amber-300' },
+  [TODO]: { label: 'Not started', className: 'bg-gray-100 text-gray-500 border-gray-300' }
+};
+
+function StatusChip({ status }) {
+  const s = STATUS_STYLE[status];
+  return (
+    <span className={`inline-block px-3 py-0.5 text-sm font-semibold rounded-full border whitespace-nowrap ${s.className}`}>
+      {s.label}
+    </span>
+  );
+}
+
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -8,6 +28,8 @@ function App() {
 
 // Introduction (Title, Recap) - Sets context, links back to the first workshop
 // Architecture (DLM diagram) - Where Rucio + FTS sit
+// Integration status (RI & e-Infra matrix) - What is connected today
+// Milestones (T2.1, T2.4) - What has been delivered
 // Testbed (What we built, IdP findings, small changes) - What has been validated
 // Deployment (Kubernetes, GitOps, managed cloud) - Dev environment to production-like
 // Authorization (OPA) - Policy-based access control
@@ -41,7 +63,7 @@ const slides = [
       },
       {
         heading: 'Since Then',
-        text: 'An open, CI-validated testbed and a Kubernetes deployment path for use cases'
+        text: 'RI and e-infrastructure storage connected to Rucio and FTS, an open CI-validated testbed and a Kubernetes deployment path'
       }
     ]
   },
@@ -51,6 +73,66 @@ const slides = [
     title: 'Data Lifecycle Management Architecture',
     description: 'Core data orchestration layer powered by Rucio and FTS, managing data discovery, transfer and preparation across distributed European research facilities',
     image: 'High-Level Diagram RI-SCALE Data Lifecycle Management.png'
+  },
+
+  {
+    type: 'matrix',
+    title: 'RI & E-Infra Integration Status',
+    columns: ['Storage Interface', 'Rucio RSE + Data', 'FTS Transfers to E-Infra'],
+    groups: [
+      {
+        name: 'E-Infra',
+        rows: [
+          { name: 'TUBITAK', status: [DONE, DONE, DONE], people: 'Marvin, Andrea, Hakan' },
+          { name: 'TU Wien', status: [DONE, DONE, DONE], people: 'Florian' },
+          { name: 'CESNET', status: [DONE, DONE, DONE], people: 'Lukas, Andrea, Marvin' },
+          { name: 'EOSC EU Node (PSNC)', status: [DONE, DONE, DONE], people: 'Andrea, Marvin' },
+          { name: 'EuroHPC (FZJ)', note: 'WP3 computation at FZJ', status: [PROGRESS, TODO, TODO], people: 'Rakesh, Marvin, Martin' }
+        ]
+      },
+      {
+        name: 'RI',
+        rows: [
+          { name: 'ENES', status: [DONE, DONE, DONE], people: 'Fabrizio, Marvin' },
+          { name: 'BBMRI', note: 'Teapot, sensitive cloud', status: [DONE, DONE, DONE], people: 'Radoslava, Lukas, Robert, Heimo, Andrea, Marvin' },
+          { name: 'EISCAT', note: 'Teapot WebDAV', status: [DONE, DONE, DONE], people: 'Carl-Fredrik' },
+          { name: 'Euro-BioImaging', status: [DONE, DONE, DONE], people: 'Teresa, Tushar' }
+        ]
+      },
+      {
+        name: 'Data Spaces',
+        rows: [
+          { name: 'EUCAIM', status: [DONE, DONE, PROGRESS], people: 'Ignacio, Marvin' },
+          { name: 'Copernicus', note: 'FTS PR for S3 headers', status: [DONE, PROGRESS, TODO], people: 'Marvin' },
+          { name: 'Destination Earth', status: [PROGRESS, TODO, TODO], people: 'Oliver Gorwits, Marvin' },
+          { name: 'GAIA-X', note: 'To be replaced by another data space', status: [TODO, TODO, TODO], people: '—' }
+        ]
+      }
+    ]
+  },
+
+  {
+    type: 'milestones',
+    title: 'Completed Milestones',
+    columns: [
+      {
+        heading: 'T2.1 Data Orchestration',
+        items: [
+          'Design blueprint for handling authentication',
+          'Rucio prototype deployed at CERN'
+        ]
+      },
+      {
+        heading: 'T2.4 RI Data Holdings',
+        items: [
+          'Survey of deployed storage: OIDC/OAuth, permissions, third-party copy (FTS), data access',
+          'Key stakeholders identified for Copernicus CDS and EUCAIM, integration challenges investigated',
+          'First RI repository integrated with the data orchestration service',
+          'Blockers identified and understood early',
+          'Authentication, third-party copy and data access issues addressed, incl. Teapot deployments'
+        ]
+      }
+    ]
   },
 
   {
@@ -123,11 +205,11 @@ const slides = [
     content: [
       {
         heading: 'Done',
-        text: 'Testbed, external IdPs, GitOps and managed-cloud staging, OPA authorization'
+        text: '9 RI and e-infrastructure integrations end to end, testbed, external IdPs, GitOps and managed-cloud staging, OPA authorization'
       },
       {
         heading: 'Next (late 2026-2027)',
-        text: 'Use-case data holdings registered as RSEs (public and sensitive), operator runbooks for partner sites, reusable deployment repository'
+        text: 'Remaining integrations (EUCAIM transfers, Copernicus, Destination Earth, EuroHPC at FZJ), further IdPs, second DEP deployment, operator runbooks for partner sites'
       },
       {
         heading: 'Later (2027-2028)',
@@ -227,6 +309,74 @@ const slides = [
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {slide.type === 'matrix' && (
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">{slide.title}</h2>
+              <table className="w-full text-base border-collapse">
+                <thead>
+                  <tr className="border-b-2 border-orange-400 text-left text-gray-700">
+                    <th className="py-2 pr-2 w-24"></th>
+                    <th className="py-2 pr-2">Provider</th>
+                    {slide.columns.map((c) => (
+                      <th key={c} className="py-2 px-2 text-center">{c}</th>
+                    ))}
+                    <th className="py-2 pl-2">Responsible</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {slide.groups.map((group) =>
+                    group.rows.map((row, rIdx) => (
+                      <tr
+                        key={`${group.name}-${row.name}`}
+                        className={`border-b border-gray-200 ${rIdx === 0 ? 'border-t-2 border-t-gray-300' : ''}`}
+                      >
+                        {rIdx === 0 && (
+                          <td
+                            rowSpan={group.rows.length}
+                            className="py-1.5 pr-2 align-top text-lg font-semibold text-orange-400"
+                          >
+                            {group.name}
+                          </td>
+                        )}
+                        <td className="py-1.5 pr-2">
+                          <div className="font-semibold text-gray-900">{row.name}</div>
+                          {row.note && <div className="text-sm text-gray-500">{row.note}</div>}
+                        </td>
+                        {row.status.map((st, i) => (
+                          <td key={i} className="py-1.5 px-2 text-center">
+                            <StatusChip status={st} />
+                          </td>
+                        ))}
+                        <td className="py-1.5 pl-2 text-sm text-gray-600">{row.people}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {slide.type === 'milestones' && (
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">{slide.title}</h2>
+              <div className="grid grid-cols-2 gap-8">
+                {slide.columns.map((col) => (
+                  <div key={col.heading} className="bg-green-50 p-6 rounded-lg border border-green-200">
+                    <h3 className="text-2xl font-semibold text-green-700 mb-4">{col.heading}</h3>
+                    <ul className="space-y-3">
+                      {col.items.map((item, idx) => (
+                        <li key={idx} className="text-lg text-gray-700 flex items-start">
+                          <span className="text-green-500 mr-3">✓</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
